@@ -57,12 +57,13 @@ class OnlineCart {
   }
 
   checkoutCart() {
-    const checkingout = 0
-    if (Object.keys(this.shoppingcart).length) {
+    var checkingout = 0
+    //.keys = list of different merch length = list of different merch
+    if (Object.keys(this.shoppingcart).length > 0) {
       for (let item in this.shoppingcart) {
         checkingout += (this.shoppingcart[item].price * this.shoppingcart[item].quantity)
       }
-
+//! in this case NOT signed on.
       if (!this.signedOn) {
         return 'Are you an existing customer? If not Create an Account'
       } else {

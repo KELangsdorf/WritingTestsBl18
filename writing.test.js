@@ -48,8 +48,8 @@ const onlineCartNotSignedOn = new OnlineCart(false)
 test('Is the user logged in', () => {
     expect(onlineCartSignedOn.signedOn).toEqual(true)
     expect(onlineCartNotSignedOn.signedOn).toEqual(false)
-    // expect(onlineCartSignedOn.OnlineCart).toEqual({})
-    // expect(onlineCartNotSignedOn.OnlineCart).toEqual({})
+    expect(onlineCartSignedOn.shoppingcart).toEqual({})
+    expect(onlineCartNotSignedOn.shoppingcart).toEqual({})
 
 })
 //Test to increase quantities of items in the cart
@@ -58,19 +58,37 @@ test('Adding an item to cart increases the item to x', () => {
     expect(onlineCartSignedOn.shoppingcart).toEqual({ Videogame: {price: 70, quantity: 1 }})
     onlineCartSignedOn.addItemToCart({ name: `Videogame`, price: 70}) 
     expect(onlineCartSignedOn.shoppingcart).toEqual({ Videogame: {price: 70, quantity: 2 }})
+
+    onlineCartNotSignedOn.addItemToCart({ name: `Videogame`, price: 70}) 
+    expect(onlineCartNotSignedOn.shoppingcart).toEqual({ Videogame: {price: 70, quantity: 1 }})
+    onlineCartNotSignedOn.addItemToCart({ name: `Videogame`, price: 70}) 
+    expect(onlineCartNotSignedOn.shoppingcart).toEqual({ Videogame: {price: 70, quantity: 2 }})    
 })
 //Test to reduce quantities of an item 
 //Test to empty cart completely
 test('Removing an item from cart reduces the contents', () => {
-    expect(onlineCartSignedOn)
-    expect(onlineCartNotSignedOn)
+   onlineCartSignedOn.removeItemFromCart({ name: `Videogame`, price: 70})
+    expect(onlineCartSignedOn.shoppingcart).toEqual({ Videogame: {price: 70, quantity: 1}})
+    onlineCartSignedOn.removeItemFromCart({ name: `Videogame`, price: 70})
+    expect(onlineCartSignedOn.shoppingcart).toEqual({})
+    onlineCartNotSignedOn.removeItemFromCart({ name: `Videogame`, price: 70})
+    expect(onlineCartNotSignedOn.shoppingcart).toEqual({ Videogame: {price: 70, quantity: 1}})
+    onlineCartNotSignedOn.removeItemFromCart({ name: `Videogame`, price: 70})
+    expect(onlineCartNotSignedOn.shoppingcart).toEqual({})
 })
 //Checks to see if they are a customer
 //Prompts to become a customer
 //Prompts an error if nothing is in the cart to checkout
 test('Checking Out', () => {
-    expect(onlineCartSignedOn)
-    expect(onlineCartNotSignedOn)
-    
+expect(onlineCartSignedOn.checkoutCart()).toEqual('Please add items prior to checkout')
+expect(onlineCartNotSignedOn.checkoutCart()).toEqual('Please add items prior to checkout')
+//Adding to cart to test checkout
+onlineCartSignedOn.addItemToCart({ name: `Videogame`, price: 70}) 
+var resultOne = onlineCartSignedOn.checkoutCart()
+expect(resultOne).toEqual(70)
+onlineCartNotSignedOn.addItemToCart({ name: `Videogame`, price: 70}) 
+var result = onlineCartNotSignedOn.checkoutCart()
+expect(result).toEqual('Are you an existing customer? If not Create an Account')
 })
+
 });
